@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import dice from "./icon-dice.svg";
+import divider from "./pattern-divider-desktop.svg";
+import "./App.css";
 
-function App() {
+const getRandomAdvice = () => {
+  return fetch("https://api.adviceslip.com/advice")
+    .then((response) => response.json())
+    .then((data) => data.slip)
+    .catch((error) => {
+      alert(`Error ${error}`);
+    });
+};
+
+function AdviceData({ advice }) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="wrapper">
+      <div className="advice">
+        <p className="advice__title">Advice #{advice.id}</p>
+        <p className="advice__content">"{advice.advice}"</p>
+        <img className="advice__divider" src={divider} alt="" />
+        <button className="advice__button" onClick={() => getRandomAdvice()}>
+          <img className="dice_img" src={dice} alt="" />
+        </button>
+      </div>
     </div>
   );
+}
+
+function App() {
+  const [advice, setAdvice] = useState("");
+
+  const randomAdvice = () => getRandomAdvice();
+  setAdvice(randomAdvice);
+
+  useEffect(() => {
+    getRandomAdvice();
+  }, []);
+
+  return <AdviceData advice={advice} />;
 }
 
 export default App;
