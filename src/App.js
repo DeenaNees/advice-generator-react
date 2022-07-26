@@ -1,8 +1,11 @@
 import "./App.css";
-import A from "./components/AdviceData";
+import AdviceData from "./components/AdviceData";
+import React from "react";
 
-function App() {
-  return <A />;
+class App extends React.Component {
+  render() {
+    return <AdviceData></AdviceData>;
+  }
 }
 
 export default App;
